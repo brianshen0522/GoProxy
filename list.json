@@ -1,0 +1,5 @@
+[
+	{"name" : "mitw fhir" , "port" : "8080", "target":"https://fhir.dicom.tw", "description":"proxy test", "enable":1},
+    {"name" : "mitw d4c" , "port" : "8081", "target":"https://d4c.dicom.org.tw", "description":"proxy test", "enable":1},
+    {"name" : "cylab" , "port" : "8082", "target":"https://cylab.dicom.tw/", "description":"proxy test", "enable":1}
+]
