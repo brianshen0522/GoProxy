@@ -3,11 +3,14 @@ import time
 import platform
 import subprocess
 import threading
-from flask import Flask, request, jsonify
+from flask_cors import CORS
+from flask import Flask, request, jsonify,make_response
 import json
 from datetime import datetime
+from pprint import pprint
 
 app = Flask(__name__)
+CORS(app)
 json_file_path = 'config.json'
 
 def proxy():
@@ -44,7 +47,7 @@ def restart():
         f.write("1")
     proxy_t = threading.Thread(target=proxy)
     proxy_t.start()
-    return 'Proxy restarted', 201
+    return 'Proxy restarted', 200
 
 @app.route("/add", methods=['GET'])
 def add():
@@ -62,22 +65,32 @@ def add():
     proxies_list.append(proxy)
     proxies_list = sorted(proxies_list, key=lambda x: int(x['port']))
     write_list_to_json(proxies_list)
+    res = make_response('proxy added', 201)
 
-    return 'proxy added', 201
+    return res
 
 @app.route("/delete", methods=['GET'])
 def delete():
-    port_to_delete = request.args.get('port')
+    delete_port_str = request.args.get('port')
+    # print(delete_port_str)
+    delete_port_arr= delete_port_str.split(',')
+    print(delete_port_arr)
+    
     proxies_list = read_json_to_list(json_file_path)
-    updated_proxies_list = [proxy for proxy in proxies_list if proxy["port"] != port_to_delete]
+    updated_proxies_list = proxies_list
+    
+    for port in delete_port_arr:
+        updated_proxies_list = [proxy for proxy in updated_proxies_list if proxy["port"] != port]
 
-    if len(updated_proxies_list) == len(proxies_list):
-        return 'port not found', 406
+        if len(updated_proxies_list) == len(proxies_list):
+            return 'port not found', 406
+        
+        updated_proxies_list = sorted(updated_proxies_list, key=lambda x: int(x['port']))
 
-    updated_proxies_list = sorted(updated_proxies_list, key=lambda x: int(x['port']))
+    pprint(updated_proxies_list)
     write_list_to_json(updated_proxies_list)
 
-    return 'proxy deleted', 201
+    return 'proxy deleted', 200
 
 @app.route("/status", methods=['GET'])
 def status():
@@ -86,5 +99,6 @@ def status():
     return jsonify(config_data)
 
 if __name__ == '__main__':
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=8080)
+    app.run(debug=True)
