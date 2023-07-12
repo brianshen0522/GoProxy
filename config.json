@@ -1,6 +1,16 @@
 {
     "proxies": [
         {
+            "port": "8081",
+            "target": "https://www.google.com",
+            "description": "google"
+        },
+        {
+            "port": "8082",
+            "target": "https://tw.yahoo.com",
+            "description": "yahoo"
+        },
+        {
             "port": "8083",
             "target": "https://www.youtube.com/",
             "description": "youtube"
