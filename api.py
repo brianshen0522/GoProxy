@@ -4,7 +4,7 @@ import platform
 import subprocess
 import threading
 from flask_cors import CORS
-from flask import Flask, request, jsonify,make_response
+from flask import Flask, request, jsonify,make_response,render_template
 import json
 from datetime import datetime
 from pprint import pprint
@@ -37,6 +37,10 @@ def find_available_port(proxies_list):
     used_ports = {int(proxy['port']) for proxy in proxies_list}
     available_port = next((port for port in range(8081, 8100) if port not in used_ports), None)
     return available_port
+
+@app.route('/')
+def home():
+   return render_template('./view/index.html')
 
 @app.route('/restart/', methods=['GET'])
 def restart():
