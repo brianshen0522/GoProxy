@@ -1,9 +1,10 @@
 //delete data
 
 const delButton = document.getElementById("deleteBtn");
+// const url = window.location.origin;
 
 function restart() {
-	fetch('http://localhost:5000/restart');
+	fetch(`${url}/restart`);
 	location.reload();
 }
 
@@ -26,8 +27,7 @@ delButton.addEventListener("click", (e) => {
 	const delStr = delPort.toString();
 
 
-	const url = window.location.origin;
-	const sel_url = `${url}:5000/delete?port=${delStr}`
+	const sel_url = `${url}/delete?port=${delStr}`
 	console.log(sel_url);
 	fetch(sel_url, {
 		method: "GET"

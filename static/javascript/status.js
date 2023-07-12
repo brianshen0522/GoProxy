@@ -1,7 +1,7 @@
 //show table
 
 const url = window.location.origin;
-const sel_url = `${url}:5000/status`;
+const sel_url = `${url}/status`;
 console.log(sel_url);
 
 function showtable(data) {

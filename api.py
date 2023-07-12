@@ -40,7 +40,7 @@ def find_available_port(proxies_list):
 
 @app.route('/')
 def home():
-   return render_template('./view/index.html')
+   return render_template('./index.html')
 
 @app.route('/restart/', methods=['GET'])
 def restart():
@@ -103,6 +103,6 @@ def status():
     return jsonify(config_data)
 
 if __name__ == '__main__':
-    # from waitress import serve
-    # serve(app, host="0.0.0.0", port=8080)
-    app.run(debug=True)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8081)
+    #app.run(debug=True)
